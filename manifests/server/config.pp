@@ -56,6 +56,7 @@ class mongodb::server::config {
   $ssl_key         = $mongodb::server::ssl_key
   $ssl_ca          = $mongodb::server::ssl_ca
   $storage_engine  = $mongodb::server::storage_engine
+  $version         = $mongodb::server::version
 
   File {
     owner => $user,
@@ -83,6 +84,14 @@ class mongodb::server::config {
         mode    => '0400',
       }
     }
+
+    notify{"mongo_extras: storage engine is: ${::storage_engine} ${::mongodb::server::storage_engine}":}
+    if empty($storage_engine) {
+      $storage_engine_internal = undef
+    } else {
+      $storage_engine_internal = $storage_engine
+    }
+
 
     #Pick which config content to use
     if $config_content {
