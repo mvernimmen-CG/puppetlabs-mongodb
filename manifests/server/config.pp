@@ -85,7 +85,6 @@ class mongodb::server::config {
       }
     }
 
-    notify{"mongo_extras: storage engine is: ${::storage_engine} ${::mongodb::server::storage_engine}":}
     if empty($storage_engine) {
       $storage_engine_internal = undef
     } else {
@@ -96,7 +95,7 @@ class mongodb::server::config {
     #Pick which config content to use
     if $config_content {
       $cfg_content = $config_content
-    } elsif (versioncmp($mongodb::globals::version, '2.6.0') >= 0) {
+    } elsif (versioncmp($version, '2.6.0') >= 0) {
       # Template uses:
       # - $auth
       # - $bind_ip
